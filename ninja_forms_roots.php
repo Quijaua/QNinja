@@ -76,3 +76,29 @@ add_action( 'init', 'nfr_init' );
 // Wireup filters
 
 // Wireup shortcodes
+// [bartag foo="foo-value"]
+function nfr_submissions( $atts ) {
+
+	global $wpdb;
+    /*$a = shortcode_atts( array(
+        'foo' => 'something',
+        'bar' => 'something else',
+    ), $atts );*/
+	 $querystr = "
+    SELECT $wpdb->posts.* 
+    FROM $wpdb->posts, $wpdb->postmeta
+    WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id 
+    #AND $wpdb->postmeta.meta_key = 'tag' 
+    #AND $wpdb->postmeta.meta_value = 'email' 
+    AND $wpdb->posts.post_status = 'publish' 
+    AND $wpdb->posts.post_type = 'nf_sub'
+    #AND $wpdb->posts.post_date < NOW()
+    ORDER BY $wpdb->posts.post_date DESC
+ ";
+
+ 	$submissions = $wpdb->get_results($querystr, OBJECT);
+	echo '<pre>';
+	print_r($submissions);
+	echo '</pre>';
+}
+add_shortcode( 'nfsubmissions', 'nfr_submissions' );
