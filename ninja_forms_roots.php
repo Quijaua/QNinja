@@ -82,9 +82,13 @@ add_action( 'init', 'nfr_init' );
 // [bartag foo="foo-value"]
 function nfr_submissions( $atts ) {
 
-     $submissions = get_all_submissions();
+     $submissions = getSubmissions();
+     $details = getSubmissionDetail(13);
      echo '<pre>';
      print_r($submissions);
+     echo '</pre>';
+     echo '<pre>';
+     print_r($details);
      echo '</pre>';
     
 }
