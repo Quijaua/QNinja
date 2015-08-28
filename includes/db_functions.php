@@ -38,6 +38,15 @@ function getSubmissionDetail($postID) {
 }
 
 function getFormsUploads() {
+	global $wpdb;
 
+	$query = "
+		SELECT wp_ninja_forms_uploads.*, wp_nf_objectmeta.meta_value
+		FROM wp_ninja_forms_uploads, wp_nf_objectmeta
+		WHERE wp_ninja_forms_uploads.form_id = wp_nf_objectmeta.object_id
+		AND wp_nf_objectmeta.meta_key = 'form_title'
+	";
+
+	return return $wpdb->get_results($query, OBJECT);
 }
 
