@@ -78,9 +78,12 @@ add_action( 'init', 'nfr_init' );
 
 // Enqueue scripts and styles
 function nfr_scripts_styles() {
+    wp_enqueue_script( 'colorbox', NFR_URL . 'assets/js/vendor/jquery.colorbox-min.js', array('jquery'), '1.0.0', true );
     wp_enqueue_script( 'ninja-roots', NFR_URL . 'assets/js/ninja_forms_roots.min.js', array(), '1.0.0', true );
-    //wp_enqueue_script( 'script-name', get_template_directory_uri() . '/js/example.js', array(), '1.0.0', true );
-    //
+    wp_enqueue_style( 'ninjaroots-core-style', NFR_URL . 'assets/css/ninja_forms_roots.min.css');
+    
+    wp_localize_script( 'ninja-roots', 'ninja_roots_object',
+        array( 'ajax_url' => admin_url( 'admin-ajax.php' )/*, 'we_value' => 1234*/ ) );
 }
 
 add_action( 'wp_enqueue_scripts', 'nfr_scripts_styles' );
@@ -111,3 +114,15 @@ function nfr_gallery($atts) {
     // Monta galeria de fotos com todos os uploads
     // wp_ninja_forms_uploads wp_nf_objectmeta object_id and meta_key = 'form_title'
 } 
+
+// Ajax functions
+function nfr_submission_details() {
+    global $wpdb;
+    $whatever = intval( $_POST['whatever'] );
+    $whatever += 15;
+    echo $whatever;
+    wp_die();
+}
+
+add_action( 'wp_ajax_submission_details', 'nfr_submission_details' );
+add_action( 'wp_ajax_nopriv_submission_details', 'nfr_submission_details' );

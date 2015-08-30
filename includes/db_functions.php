@@ -21,15 +21,16 @@ function getSubmissions() {
 	return $wpdb->get_results($query, OBJECT);
 }
 
-function getSubmissionDetail($postID) {
+function getSubmissionDetails($postID) {
 
 	global $wpdb;
 
 	$query = "
-		SELECT wp_ninja_forms_fields.data, $wpdb->postmeta.meta_value
+		SELECT $wpdb->postmeta.meta_key, $wpdb->postmeta.meta_value
 		FROM wp_ninja_forms_fields, $wpdb->postmeta
 		WHERE $wpdb->postmeta.post_id = $postID
 		AND $wpdb->postmeta.meta_key LIKE '%_field_%'
+		#AND $wpdb->postmeta.meta_value <> ''
 		GROUP BY $wpdb->postmeta.meta_id
 	";
 	
