@@ -76,6 +76,16 @@ register_deactivation_hook( __FILE__, 'nfr_deactivate' );
 // Wireup actions
 add_action( 'init', 'nfr_init' );
 
+// Enqueue scripts and styles
+function nfr_scripts_styles() {
+    wp_enqueue_script( 'ninja-roots', NFR_URL . 'assets/js/ninja_forms_roots.min.js', array(), '1.0.0', true );
+    //wp_enqueue_script( 'script-name', get_template_directory_uri() . '/js/example.js', array(), '1.0.0', true );
+    //
+}
+
+add_action( 'wp_enqueue_scripts', 'nfr_scripts_styles' );
+
+
 // Wireup filters
 
 // Wireup shortcodes
@@ -84,12 +94,12 @@ function nfr_submissions( $atts ) {
 
      $submissions = getSubmissions();
      $details = getSubmissionDetail(13);
-     echo '<pre>';
+     /*echo '<pre>';
      print_r($submissions);
      echo '</pre>';
      echo '<pre>';
      print_r($details);
-     echo '</pre>';
+     echo '</pre>';*/
     
 }
 add_shortcode( 'nfsubmissions', 'nfr_submissions' );
@@ -98,6 +108,4 @@ function nfr_gallery($atts) {
     
     // Monta galeria de fotos com todos os uploads
     // wp_ninja_forms_uploads wp_nf_objectmeta object_id and meta_key = 'form_title'
-   
-
 } 

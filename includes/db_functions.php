@@ -47,6 +47,6 @@ function getFormsUploads() {
 		AND wp_nf_objectmeta.meta_key = 'form_title'
 	";
 
-	return return $wpdb->get_results($query, OBJECT);
+	return $wpdb->get_results($query, OBJECT);
 }
 
