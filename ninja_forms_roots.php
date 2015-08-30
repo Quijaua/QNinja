@@ -93,7 +93,9 @@ add_action( 'wp_enqueue_scripts', 'nfr_scripts_styles' );
 function nfr_submissions( $atts ) {
 
      $submissions = getSubmissions();
-     $details = getSubmissionDetail(13);
+     //$details = getSubmissionDetail(13);
+     include NFR_PATH . 'includes/views/submissions.php';
+
      /*echo '<pre>';
      print_r($submissions);
      echo '</pre>';

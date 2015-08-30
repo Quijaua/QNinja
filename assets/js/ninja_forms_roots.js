@@ -3,6 +3,6 @@
  * Copyright (c) 2015; * Licensed GPLv2+ */
 ( function( window, undefined ) {
 	'use strict';
-	window.alert("teste");
+	//window.alert("teste");
 
 } )( this );

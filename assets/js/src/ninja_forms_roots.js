@@ -8,6 +8,6 @@
  
 ( function( window, undefined ) {
 	'use strict';
-	window.alert("teste");
+	//window.alert("teste");
 
 } )( this );
