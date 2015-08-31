@@ -21,9 +21,11 @@
 				'action': 'submission_details',
 				'whatever': 10      // We pass php values differently!
 			},
-			inline_colorbox = jQuery(".inline")
+			inline_colorbox = jQuery(".inline"),
+			gallery = jQuery(".nf_gallery")
 		;
 			inline_colorbox.colorbox({inline:true, width:"50%"});
+			gallery.colorbox({rel:'nf_gallery'});
 
 		/*submission_el.on('click', function() {
 			jQuery.post(ninja_roots_object.ajax_url, data, function(response) {

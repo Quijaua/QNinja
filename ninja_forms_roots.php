@@ -98,22 +98,19 @@ function nfr_submissions( $atts ) {
      $submissions = getSubmissions();
      //$details = getSubmissionDetail(13);
      include NFR_PATH . 'includes/views/submissions.php';
-
-     /*echo '<pre>';
-     print_r($submissions);
-     echo '</pre>';
-     echo '<pre>';
-     print_r($details);
-     echo '</pre>';*/
-    
 }
 add_shortcode( 'nfsubmissions', 'nfr_submissions' );
 
 function nfr_gallery($atts) {
     
-    // Monta galeria de fotos com todos os uploads
-    // wp_ninja_forms_uploads wp_nf_objectmeta object_id and meta_key = 'form_title'
+    $uploads = getFormsUploads();
+
+    include NFR_PATH . 'includes/views/gallery.php';
+   
+    
 } 
+add_shortcode( 'nfgallery', 'nfr_gallery' );
+
 
 // Ajax functions
 function nfr_submission_details() {
