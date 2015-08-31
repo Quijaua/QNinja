@@ -51,3 +51,20 @@ function getFormsUploads() {
 	return $wpdb->get_results($query, OBJECT);
 }
 
+function getLabelByMetaKey($metaKey) {
+	
+	$id = (int) str_replace("_field_", "", $metaKey);
+	global $wpdb;
+
+	$query = "
+	SELECT wp_ninja_forms_fields.data
+	FROM wp_ninja_forms_fields
+	WHERE wp_ninja_forms_fields.id = $id
+	";
+
+	$data = $wpdb->get_results($query, OBJECT);
+	$field_metadata = unserialize($data[0]->data);
+	return false === $field_metadata ? $metaKey : $field_metadata['label'];
+	
+}
+

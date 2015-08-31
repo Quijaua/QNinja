@@ -14,14 +14,18 @@ if(is_array($submissions)) {
 	foreach($submissions as $submission) {
 		$li    = str_replace("#SUBMISSION_ID#", $submission->ID, $template);
 		$li    = str_replace("#SUBMISSION_TITLE#", $submission->submissionTitle, $li);
-		//$li    = str_replace("#SUBMISSION_TITLE#", $submission->submissionTitle, $li);
 		$li    = str_replace("#INLINE_CONTENT_ID#", 'inline-content-'.$submission->ID, $li);
 		$details = getSubmissionDetails($submission->ID);
 
 		if(is_array($details)) {
 			$details_markup = "";
 			foreach($details as $detail) {
-				$details_markup .= "<strong>{$detail->meta_key}</strong> $detail->meta_value<br />";
+
+				$label = getLabelByMetaKey($detail->meta_key);
+				//if($label !== "Submit") {
+					$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";
+				//}
+				
 			}
 		$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $li);	
 		}
