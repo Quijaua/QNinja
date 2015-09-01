@@ -12,24 +12,37 @@ $template .= '</li>';
 $html = "<ul>";
 if(is_array($submissions)) {
 	foreach($submissions as $submission) {
-		$li    = str_replace("#SUBMISSION_ID#", $submission->ID, $template);
-		$li    = str_replace("#SUBMISSION_TITLE#", $submission->submissionTitle, $li);
-		$li    = str_replace("#INLINE_CONTENT_ID#", 'inline-content-'.$submission->ID, $li);
-		$details = getSubmissionDetails($submission->ID);
 
-		if(is_array($details)) {
-			$details_markup = "";
-			foreach($details as $detail) {
-
-				$label = getLabelByMetaKey($detail->meta_key);
-				//if($label !== "Submit") {
-					$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";
-				//}
-				
-			}
-		$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $li);	
+		if(empty($form_id)) {
+			$show_submission = true;
 		}
-		$html .= $li;
+		
+		if(!empty($form_id)) {
+			$show_submission = get_post_meta($submission->ID, '_form_id', true) == $form_id;
+		}
+
+		if($show_submission) {
+			$li    = str_replace("#SUBMISSION_ID#", $submission->ID, $template);
+			$li    = str_replace("#SUBMISSION_TITLE#", $submission->submissionTitle, $li);
+			$li    = str_replace("#INLINE_CONTENT_ID#", 'inline-content-'.$submission->ID, $li);
+			$details = getSubmissionDetails($submission->ID);
+
+			if(is_array($details)) {
+				$details_markup = "";
+				foreach($details as $detail) {
+
+					$label = getLabelByMetaKey($detail->meta_key);
+					//if($label !== "Submit") {
+						$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";
+					//}
+					
+				}
+			$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $li);	
+			}
+			$html .= $li;
+		}
+		
+		
 
 	}
 }

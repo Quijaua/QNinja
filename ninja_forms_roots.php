@@ -83,7 +83,7 @@ function nfr_scripts_styles() {
     wp_enqueue_style( 'ninjaroots-core-style', NFR_URL . 'assets/css/ninja_forms_roots.min.css');
     
     wp_localize_script( 'ninja-roots', 'ninja_roots_object',
-        array( 'ajax_url' => admin_url( 'admin-ajax.php' )/*, 'we_value' => 1234*/ ) );
+        array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 }
 
 add_action( 'wp_enqueue_scripts', 'nfr_scripts_styles' );
@@ -92,23 +92,28 @@ add_action( 'wp_enqueue_scripts', 'nfr_scripts_styles' );
 // Wireup filters
 
 // Wireup shortcodes
-// [bartag foo="foo-value"]
 function nfr_submissions( $atts ) {
-
+     
+     $attributes = shortcode_atts( array(
+        'id' => '',
+    ), $atts );
+     
+     $form_id = $attributes['id'];
      $submissions = getSubmissions();
-     //$details = getSubmissionDetail(13);
      include NFR_PATH . 'includes/views/submissions.php';
+     
+
+      
+
 }
 add_shortcode( 'nfsubmissions', 'nfr_submissions' );
 
 function nfr_gallery($atts) {
-    
-    $uploads = getFormsUploads();
 
-    include NFR_PATH . 'includes/views/gallery.php';
-   
-    
-} 
+    $uploads = getFormsUploads();
+    include NFR_PATH . 'includes/views/gallery.php';    
+
+}
 add_shortcode( 'nfgallery', 'nfr_gallery' );
 
 
