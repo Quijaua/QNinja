@@ -5,7 +5,7 @@ function getSubmissions($id = '') {
 	global $wpdb;
 		$query = "
 			SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value AS submissionTitle
-			FROM $wpdb->posts, $wpdb->postmeta, wp_ninja_forms_fields
+			FROM $wpdb->posts, $wpdb->postmeta
 			WHERE $wpdb->posts.post_type = 'nf_sub'
 			AND $wpdb->posts.ID = $wpdb->postmeta.post_id
 			AND $wpdb->postmeta.meta_key LIKE '%_field_%'		
@@ -24,10 +24,9 @@ function getSubmissionDetails($postID) {
 
 	$query = "
 		SELECT $wpdb->postmeta.meta_key, $wpdb->postmeta.meta_value
-		FROM wp_ninja_forms_fields, $wpdb->postmeta
+		FROM  $wpdb->postmeta
 		WHERE $wpdb->postmeta.post_id = $postID
 		AND $wpdb->postmeta.meta_key LIKE '%_field_%'
-		#AND $wpdb->postmeta.meta_value <> ''
 		GROUP BY $wpdb->postmeta.meta_id
 	";
 	
@@ -36,15 +35,18 @@ function getSubmissionDetails($postID) {
 }
 
 function getFormsUploads() {
+	
 	global $wpdb;
+	$ninja_forms_uploads = $wpdb->prefix . 'ninja_forms_uploads';
+	$ninja_nf_objectmeta = $wpdb->prefix . 'nf_objectmeta';
 
 	$query = "
-		SELECT wp_ninja_forms_uploads.*, wp_nf_objectmeta.meta_value
-		FROM wp_ninja_forms_uploads, wp_nf_objectmeta
-		WHERE wp_ninja_forms_uploads.form_id = wp_nf_objectmeta.object_id
-		AND wp_nf_objectmeta.meta_key = 'form_title'
+		SELECT {$ninja_forms_uploads}.*, {$ninja_nf_objectmeta}.meta_value
+		FROM {$ninja_forms_uploads}, {$ninja_nf_objectmeta}
+		WHERE {$ninja_forms_uploads}.form_id = {$ninja_nf_objectmeta}.object_id
+		AND {$ninja_nf_objectmeta}.meta_key = 'form_title'
 	";
-
+	
 	return $wpdb->get_results($query, OBJECT);
 }
 
@@ -53,10 +55,11 @@ function getLabelByMetaKey($metaKey) {
 	$id = (int) str_replace("_field_", "", $metaKey);
 	global $wpdb;
 
+	$ninja_ninja_forms_fields = $wpdb->prefix . 'ninja_forms_fields'; 
 	$query = "
-	SELECT wp_ninja_forms_fields.data
-	FROM wp_ninja_forms_fields
-	WHERE wp_ninja_forms_fields.id = $id
+		SELECT {$ninja_ninja_forms_fields}.data
+		FROM {$ninja_ninja_forms_fields}
+		WHERE {$ninja_ninja_forms_fields}.id = $id
 	";
 
 	$data = $wpdb->get_results($query, OBJECT);
