@@ -32,9 +32,39 @@ if(is_array($submissions)) {
 				foreach($details as $detail) {
 
 					$label = getLabelByMetaKey($detail->meta_key);
-					//if($label !== "Submit") {
-						$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";
-					//}
+					if(! is_serialized($detail->meta_value)) {
+						$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";	
+					}
+					if(is_serialized($detail->meta_value)) {
+						$data = unserialize($detail->meta_value);
+						
+						if(isset($data[$data_keys[0]]['file_url'])) {
+							$file_url = data[$data_keys[0]]['file_url'];
+							$details_markup .= "<strong>{$label}</strong><img src='{$file_url}'><br />";
+						}
+
+						if(is_array($data)) {
+							$details_markup .= "<strong>{$label}</strong><ul>";
+							foreach($data as $key => $item) {
+								if(isset($item['file_url'])) {
+									$file_url = $item['file_url'];
+									$details_markup .= "<li><img src='{$file_url}'></li>";
+								}
+
+								if(! isset($item['file_url'])) {
+									$details_markup .= $item;
+									if($key != count($data) - 1) {
+										$details_markup .= ", ";
+
+									}
+								}
+							}
+
+							$details_markup .= "<ul>";
+
+						}
+					}
+					
 					
 				}
 			$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $li);	
