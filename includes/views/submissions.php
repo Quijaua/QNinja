@@ -39,7 +39,7 @@ if(is_array($submissions)) {
 						$data = unserialize($detail->meta_value);
 						
 						if(isset($data[$data_keys[0]]['file_url'])) {
-							$file_url = data[$data_keys[0]]['file_url'];
+							$file_url = $data[$data_keys[0]]['file_url'];
 							$details_markup .= "<strong>{$label}</strong><img src='{$file_url}'><br />";
 						}
 
