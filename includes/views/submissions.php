@@ -29,45 +29,54 @@ if(is_array($submissions)) {
 
 			if(is_array($details)) {
 				$details_markup = "";
+				//
 				foreach($details as $detail) {
 
 					$label = getLabelByMetaKey($detail->meta_key);
 					if(! is_serialized($detail->meta_value)) {
-						$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";	
+						if(! in_array(str_replace("_field_", "", $detail->meta_key), $exclude_fields))  {
+							$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";		
+						}
 					}
 					if(is_serialized($detail->meta_value)) {
 						$data = unserialize($detail->meta_value);
 						$data_keys = array_keys($data);
 						if(isset($data[$data_keys[0]]['file_url'])) {
 							$file_url = $data[$data_keys[0]]['file_url'];
-							$details_markup .= "<strong>{$label}</strong><img src='{$file_url}'><br />";
+							if(! in_array(str_replace("_field_", "", $detail->meta_key), $exclude_fields))  {
+								$details_markup .= "<strong>{$label}</strong><img src='{$file_url}'><br />";
+							}
+							
 						}
 
 						if(is_array($data)) {
-							$details_markup .= "<strong>{$label}</strong><ul>";
-							foreach($data as $key => $item) {
-								if(isset($item['file_url'])) {
-									$file_url = $item['file_url'];
-									$details_markup .= "<li><img src='{$file_url}'></li>";
-								}
+							if(! in_array(str_replace("_field_", "", $detail->meta_key), $exclude_fields))  {
+								$details_markup .= "<strong>{$label}</strong><ul>";
+								foreach($data as $key => $item) {
+									if(isset($item['file_url'])) {
+										$file_url = $item['file_url'];
+										$details_markup .= "<li><img src='{$file_url}'></li>";
+									}
 
-								if(! isset($item['file_url'])) {
-									$details_markup .= $item;
-									if($key != count($data) - 1) {
-										$details_markup .= ", ";
+									if(! isset($item['file_url'])) {
+										$details_markup .= $item;
+										if($key != count($data) - 1) {
+											$details_markup .= ", ";
 
+										}
 									}
 								}
+
+								$details_markup .= "<ul>";
+
 							}
-
-							$details_markup .= "<ul>";
-
 						}
 					}
 					
 					
 				}
-			$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $li);	
+				$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $li);	
+			//
 			}
 			$html .= $li;
 		}
