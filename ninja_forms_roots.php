@@ -95,10 +95,13 @@ add_action( 'wp_enqueue_scripts', 'nfr_scripts_styles' );
 function nfr_submissions( $atts ) {
      
      $attributes = shortcode_atts( array(
-        'id' => '',
+        'id'             => '',
+        'exclude_fields' => ''
     ), $atts );
      
      $form_id = $attributes['id'];
+     $exclude_fields = explode(",", $attributes['exclude_fields']);
+     
      $submissions = getSubmissions();
      include NFR_PATH . 'includes/views/submissions.php';
      

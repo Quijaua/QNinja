@@ -27,9 +27,10 @@ function getSubmissionDetails($postID) {
 		FROM  $wpdb->postmeta
 		WHERE $wpdb->postmeta.post_id = $postID
 		AND $wpdb->postmeta.meta_key LIKE '%_field_%'
+		AND $wpdb->postmeta.meta_key <> '_action'
+		AND $wpdb->postmeta.meta_value <> ''
 		GROUP BY $wpdb->postmeta.meta_id
 	";
-	
 	return $wpdb->get_results($query, OBJECT);
 
 }
