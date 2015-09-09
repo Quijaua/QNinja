@@ -1,5 +1,5 @@
 <?php
-$template .= '#SUBMISSION_DETAILS#';
+$templateHtml = '#SUBMISSION_DETAILS#';
 $html = "";
 $exclude_fields = [];
 
@@ -11,11 +11,13 @@ $details = getSubmissionDetails($current_post_id);
 			if(is_array($details)) {
 				$details_markup = "<p>";
 				//
+				
 				foreach($details as $detail) {
 					$label = getLabelByMetaKey($detail->meta_key);
 					if(! is_serialized($detail->meta_value)) {
 						if(! in_array(str_replace("_field_", "", $detail->meta_key), $exclude_fields))  {
 							$details_markup .= "<strong>{$label}</strong> $detail->meta_value<br />";		
+							//var_dump($details_markup);die;
 						}
 					}
 					if(is_serialized($detail->meta_value)) {
@@ -47,7 +49,7 @@ $details = getSubmissionDetails($current_post_id);
 									}
 								}
 
-								$details_markup .= "</p>";
+								
 
 							}
 						}
@@ -55,8 +57,8 @@ $details = getSubmissionDetails($current_post_id);
 					
 					
 				}
-
-				$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $template);	
+				$details_markup .= "</p>";
+				$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $templateHtml);	
 			//
 			}
 			$html .= $li;

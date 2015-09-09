@@ -124,15 +124,5 @@ function nfr_gallery($atts) {
 }
 add_shortcode( 'nfgallery', 'nfr_gallery' );
 
-
-// Ajax functions
-function nfr_submission_details() {
-    global $wpdb;
-    $whatever = intval( $_POST['whatever'] );
-    $whatever += 15;
-    echo $whatever;
-    wp_die();
-}
-
 add_action( 'wp_ajax_submission_details', 'nfr_submission_details' );
 add_action( 'wp_ajax_nopriv_submission_details', 'nfr_submission_details' );
