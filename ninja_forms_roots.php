@@ -103,8 +103,10 @@ function nfr_submissions( $atts ) {
      $exclude_fields = explode(",", $attributes['exclude_fields']);
      
      $submissions = getSubmissions();
+     ob_start();
      include NFR_PATH . 'includes/views/submissions.php';
-     
+     $output = ob_get_clean();
+     return $output;
 
       
 
@@ -114,7 +116,10 @@ add_shortcode( 'nfsubmissions', 'nfr_submissions' );
 function nfr_gallery($atts) {
 
     $uploads = getFormsUploads();
-    include NFR_PATH . 'includes/views/gallery.php';    
+    ob_start();
+    include NFR_PATH . 'includes/views/gallery.php';
+    $output = ob_get_clean();
+    return $output;
 
 }
 add_shortcode( 'nfgallery', 'nfr_gallery' );

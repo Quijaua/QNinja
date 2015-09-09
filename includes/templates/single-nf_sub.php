@@ -1,39 +1,17 @@
 <?php
-//$template = '<li><a href="##INLINE_CONTENT_ID#" class="inline" data-submission-id="#SUBMISSION_ID#">#SUBMISSION_TITLE#</a>';
-$template = '<li><a href="#INLINE_CONTENT_ID#" class="" data-submission-id="#SUBMISSION_ID#">#SUBMISSION_TITLE#</a>';
-$template .= '<div style="display:none">';
-$template .= '<div id="#INLINE_CONTENT_ID#" style="padding:10px; background:#fff;">';
-$template .= '<h1>#SUBMISSION_TITLE#</h1>';
 $template .= '#SUBMISSION_DETAILS#';
-$template .= '</div>';
-$template .= '</li>';
+$html = "";
+$exclude_fields = [];
 
+get_header();
 
-
-$html = "<ul>";
-if(is_array($submissions)) {
-	foreach($submissions as $submission) {
-
-		if(empty($form_id)) {
-			$show_submission = true;
-		}
-		
-		if(!empty($form_id)) {
-			$show_submission = get_post_meta($submission->ID, '_form_id', true) == $form_id;
-		}
-
-		if($show_submission) {
-			$li    = str_replace("#SUBMISSION_ID#", $submission->ID, $template);
-			$li    = str_replace("#SUBMISSION_TITLE#", $submission->submissionTitle, $li);
-			//$li    = str_replace("#INLINE_CONTENT_ID#", 'inline-content-'.$submission->ID, $li);
-            $li    = str_replace("#INLINE_CONTENT_ID#", get_permalink($submission->ID), $li);
-			$details = getSubmissionDetails($submission->ID);
+$current_post_id = $post->ID;
+$details = getSubmissionDetails($current_post_id);
 
 			if(is_array($details)) {
-				$details_markup = "";
+				$details_markup = "<p>";
 				//
 				foreach($details as $detail) {
-
 					$label = getLabelByMetaKey($detail->meta_key);
 					if(! is_serialized($detail->meta_value)) {
 						if(! in_array(str_replace("_field_", "", $detail->meta_key), $exclude_fields))  {
@@ -57,7 +35,7 @@ if(is_array($submissions)) {
 								foreach($data as $key => $item) {
 									if(isset($item['file_url'])) {
 										$file_url = $item['file_url'];
-										$details_markup .= "<li><img src='{$file_url}'></li>";
+										$details_markup .= "<img src='{$file_url}'>";
 									}
 
 									if(! isset($item['file_url'])) {
@@ -69,7 +47,7 @@ if(is_array($submissions)) {
 									}
 								}
 
-								$details_markup .= "<ul>";
+								$details_markup .= "</p>";
 
 							}
 						}
@@ -77,15 +55,10 @@ if(is_array($submissions)) {
 					
 					
 				}
-				$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $li);	
+
+				$li    = str_replace("#SUBMISSION_DETAILS#", $details_markup, $template);	
 			//
 			}
 			$html .= $li;
-		}
-		
-		
-
-	}
-}
-$html .= "</ul>";
-echo $html;
+echo $html;	
+get_footer();
